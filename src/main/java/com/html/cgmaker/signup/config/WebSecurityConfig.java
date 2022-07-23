@@ -1,6 +1,8 @@
 package com.html.cgmaker.signup.config;
 
 import com.html.cgmaker.signup.config.auth.CustomOAuth2UserService;
+import com.html.cgmaker.signup.handler.CustomAuthenticationFailureHandler;
+import com.html.cgmaker.signup.handler.CustomAuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest.StaticResourceRequestMatcher;
@@ -32,10 +34,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf().disable();
-
-
-        http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
@@ -44,7 +43,10 @@ public class WebSecurityConfig {
                 .logoutSuccessUrl("/")
                 .and()
                 .oauth2Login()
-                .userInfoEndpoint().userService(customOAuth2UserService);
+                .userInfoEndpoint().userService(customOAuth2UserService)
+                .and()
+                .successHandler(customAuthenticationSuccessHandler())
+                .failureHandler(customAuthenticationFailureHandler());
 
         return http.build();
     }
@@ -59,4 +61,15 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    private static CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler(){
+        return new CustomAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    private static CustomAuthenticationFailureHandler customAuthenticationFailureHandler(){
+        return new CustomAuthenticationFailureHandler();
+    }
+
 }
