@@ -1,6 +1,7 @@
-package com.html.cgmaker.signup.config.auth;
+package com.html.cgmaker.signup.config.auth.service;
 
 import com.html.cgmaker.signup.config.auth.dto.OAuthAttributes;
+import com.html.cgmaker.signup.domain.service.UserService;
 import com.html.cgmaker.signup.domain.user.User;
 import com.html.cgmaker.signup.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,23 +22,20 @@ import java.util.Collections;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final UserRepository userRepository;
-
+    private final UserService userService;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        // userRequest가 NULL 값을 나타낼 수 없다는 것을 의미
-        Assert.notNull(userRequest, "userRequest cannot be null");
 
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest);
+        OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
+        OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
 
+        System.out.println("oAuth2User = " + oAuth2User);
 
         // UserInfoEndpoint를 이용하여 사용자에 대한 ID 검색이 가능
         UserInfoEndpoint userInfoEndpoint = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint();
 
         // 현재 로그인 진행 중인 서비스를 구분하는 코드, 구글 or Github
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-
 
         // 사용자 infoEndpoint에 대한 URI 반환
         String userInfoUri = userInfoEndpoint.getUri();
@@ -49,20 +47,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         // 유저 정보 저장 또는 업데이트
-        User user = saveOrUpdate(attributes);
+        User user = userService.saveOrUpdate(attributes);
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey()
         );
     }
 
-    public User saveOrUpdate(OAuthAttributes attributes){
-        User user = userRepository.findByUserEmail(attributes.getUserEmail())
-                .map(entity -> entity.update(attributes.getUserName(), attributes.getPicturePath()))
-                .orElse(attributes.toEntity());
-
-        return userRepository.save(user);
-    }
 }
