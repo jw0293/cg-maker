@@ -24,6 +24,10 @@ bin/
 *.ipr
 out/
 !**/src/main/**/out/
+
+application-oauth.yml
+application-db.yml
+
 !**/src/test/**/out/
 
 ### NetBeans ###
