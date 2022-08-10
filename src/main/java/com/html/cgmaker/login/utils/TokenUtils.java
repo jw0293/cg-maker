@@ -1,6 +1,6 @@
-package com.html.cgmaker.signup.utils;
+package com.html.cgmaker.login.utils;
 
-import com.html.cgmaker.signup.domain.dto.Token;
+import com.html.cgmaker.login.domain.dto.Token;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;

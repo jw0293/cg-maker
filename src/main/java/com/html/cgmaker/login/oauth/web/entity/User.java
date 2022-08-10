@@ -1,7 +1,7 @@
-package com.html.cgmaker.signup.domain.user;
+package com.html.cgmaker.login.oauth.web.entity;
 
-import com.html.cgmaker.signup.enums.UserRole;
-import com.html.cgmaker.signup.domain.BaseTimeEntity;
+import com.html.cgmaker.login.BaseTimeEntity;
+import com.html.cgmaker.login.domain.enums.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

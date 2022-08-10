@@ -1,4 +1,4 @@
-package com.html.cgmaker.signup.error.controller;
+package com.html.cgmaker.login.error.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

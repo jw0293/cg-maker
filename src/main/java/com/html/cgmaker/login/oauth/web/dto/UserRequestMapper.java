@@ -1,4 +1,4 @@
-package com.html.cgmaker.signup.domain.dto;
+package com.html.cgmaker.login.oauth.web.dto;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;

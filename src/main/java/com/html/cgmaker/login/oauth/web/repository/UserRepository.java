@@ -1,6 +1,6 @@
-package com.html.cgmaker.signup.domain.repository;
+package com.html.cgmaker.login.oauth.web.repository;
 
-import com.html.cgmaker.signup.domain.user.User;
+import com.html.cgmaker.login.oauth.web.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.html.cgmaker.signup.enums;
+package com.html.cgmaker.login.domain.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
