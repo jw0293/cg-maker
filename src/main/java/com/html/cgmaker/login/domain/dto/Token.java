@@ -1,4 +1,4 @@
-package com.html.cgmaker.signup.domain.dto;
+package com.html.cgmaker.login.domain.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
