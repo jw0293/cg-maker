@@ -1,4 +1,4 @@
-package com.html.cgmaker.signup.handler;
+package com.html.cgmaker.login.oauth.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

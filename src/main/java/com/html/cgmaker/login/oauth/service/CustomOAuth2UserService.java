@@ -1,9 +1,8 @@
-package com.html.cgmaker.signup.config.auth.service;
+package com.html.cgmaker.login.oauth.service;
 
-import com.html.cgmaker.signup.config.auth.dto.OAuthAttributes;
-import com.html.cgmaker.signup.domain.service.UserService;
-import com.html.cgmaker.signup.domain.user.User;
-import com.html.cgmaker.signup.domain.repository.UserRepository;
+import com.html.cgmaker.login.oauth.dto.OAuthAttributes;
+import com.html.cgmaker.login.oauth.web.entity.User;
+import com.html.cgmaker.login.oauth.web.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.registration.ClientRegistration.ProviderDetails.UserInfoEndpoint;
@@ -14,7 +13,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.Collections;
 
@@ -28,8 +26,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
-
-        System.out.println("oAuth2User = " + oAuth2User);
 
         // UserInfoEndpoint를 이용하여 사용자에 대한 ID 검색이 가능
         UserInfoEndpoint userInfoEndpoint = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint();

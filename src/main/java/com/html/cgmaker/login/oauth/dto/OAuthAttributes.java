@@ -1,7 +1,7 @@
-package com.html.cgmaker.signup.config.auth.dto;
+package com.html.cgmaker.login.oauth.dto;
 
-import com.html.cgmaker.signup.enums.UserRole;
-import com.html.cgmaker.signup.domain.user.User;
+import com.html.cgmaker.login.oauth.web.entity.User;
+import com.html.cgmaker.login.domain.enums.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 

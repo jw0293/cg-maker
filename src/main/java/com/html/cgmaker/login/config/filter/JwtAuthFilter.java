@@ -1,8 +1,8 @@
-package com.html.cgmaker.signup.config.filter;
+package com.html.cgmaker.login.config.filter;
 
-import com.html.cgmaker.signup.domain.dto.UserDto;
-import com.html.cgmaker.signup.domain.repository.UserRepository;
-import com.html.cgmaker.signup.utils.TokenUtils;
+import com.html.cgmaker.login.oauth.web.dto.UserDto;
+import com.html.cgmaker.login.oauth.web.repository.UserRepository;
+import com.html.cgmaker.login.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,8 +33,6 @@ public class JwtAuthFilter extends GenericFilterBean {
                          FilterChain chain) throws IOException, ServletException {
 
         String filterToken = ((HttpServletRequest) request).getHeader("Auth");
-
-        log.info("JwtAuthFilter Token = {}", filterToken);
 
         if(filterToken != null && tokenUtils.isValidToken(filterToken)){
 
