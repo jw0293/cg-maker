@@ -31,12 +31,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final TokenUtils tokenUtils;
-    private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

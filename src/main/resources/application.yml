@@ -13,6 +13,13 @@ spring:
       hibernate:
         format_sql: true
 
+  cache:
+    type: redis
+  redis:
+    host: 3.38.76.155
+    port: 6379
+
+
 server:
   port: 8084
 
