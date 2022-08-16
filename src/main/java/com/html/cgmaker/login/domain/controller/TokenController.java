@@ -2,6 +2,7 @@ package com.html.cgmaker.login.domain.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.html.cgmaker.login.domain.constants.AuthConstants;
+import com.html.cgmaker.login.domain.enums.UserRole;
 import com.html.cgmaker.login.utils.TokenUtils;
 import com.html.cgmaker.login.domain.dto.Token;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,11 @@ public class TokenController {
     @PostMapping("/token/refresh")
     public String refreshAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String refreshToken = request.getHeader("Refresh");
+        String refreshToken = request.getHeader(AuthConstants.REFRESH_HEADER);
 
         if(refreshToken != null && tokenUtils.isValidToken(refreshToken)){
             String email = tokenUtils.getUid(refreshToken);
-            Token newToken = tokenUtils.generateToken(email, "USER");
+            Token newToken = tokenUtils.generateToken(email, UserRole.USER.getKey());
 
             response.addHeader(AuthConstants.AUTH_HEADER, newToken.getAccessToken());
             response.addHeader(AuthConstants.REFRESH_HEADER, newToken.getRefreshToken());
@@ -44,9 +45,7 @@ public class TokenController {
 
             return "OK NEW TOKEN";
         }
-
         throw new RuntimeException();
-
     }
 
 

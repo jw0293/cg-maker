@@ -19,8 +19,8 @@ public class TokenUtils {
 
     // Access 토큰 유효시간 15분
     static final long AccessTokenValidTime = 15 * 60 * 1000L;
-    // Refresh Token
-    static final long RefreshTokenValidTime = 2 * 24 * 60 * 1000L;
+    // Refresh Token 유효시간 2시간
+    static final long RefreshTokenValidTime = 2 * 60 * 60 * 1000L;
 
 
     @Value("${password}")
@@ -68,6 +68,7 @@ public class TokenUtils {
             return false;
         }
     }
+
 
     public String getUid(String token){
         return Jwts.parser().setSigningKey(secretKey)
