@@ -1,5 +1,7 @@
 package com.html.cgmaker.login.config.filter;
 
+import com.html.cgmaker.login.domain.constants.AuthConstants;
+import com.html.cgmaker.login.domain.enums.UserRole;
 import com.html.cgmaker.login.oauth.web.dto.UserDto;
 import com.html.cgmaker.login.oauth.web.repository.UserRepository;
 import com.html.cgmaker.login.utils.TokenUtils;
@@ -32,7 +34,7 @@ public class JwtAuthFilter extends GenericFilterBean {
                          ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
 
-        String filterToken = ((HttpServletRequest) request).getHeader("Auth");
+        String filterToken = ((HttpServletRequest) request).getHeader(AuthConstants.AUTH_HEADER);
 
         if(filterToken != null && tokenUtils.isValidToken(filterToken)){
 
@@ -51,6 +53,6 @@ public class JwtAuthFilter extends GenericFilterBean {
 
     public Authentication getAuthentication(UserDto userDto){
         return new UsernamePasswordAuthenticationToken(userDto, "",
-                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+                Arrays.asList(new SimpleGrantedAuthority(UserRole.USER.getKey())));
     }
 }
