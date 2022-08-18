@@ -7,6 +7,8 @@ import com.html.cgmaker.login.oauth.service.CustomOAuth2UserService;
 import com.html.cgmaker.login.oauth.handler.CustomAuthenticationFailureHandler;
 import com.html.cgmaker.login.oauth.handler.CustomAuthenticationSuccessHandler;
 import com.html.cgmaker.login.oauth.web.repository.UserRepository;
+import com.html.cgmaker.login.utils.CookieUtils;
+import com.html.cgmaker.login.utils.RedisUtils;
 import com.html.cgmaker.login.utils.TokenUtils;
 import com.html.cgmaker.login.form.web.service.MemberDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final TokenUtils tokenUtils;
+    private final RedisUtils redisUtils;
+    private final CookieUtils cookieUtils;
     private final UserDetailsService userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
 
@@ -42,23 +46,6 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-//        http
-//                        .httpBasic().disable()
-//                        .csrf().disable()
-//                        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                    .and()
-//                        .authorizeRequests()
-//                        .antMatchers("/token/**").permitAll()
-//                        .antMatchers("/user/**").hasRole("USER")
-//                        .antMatchers("/admin/**").hasRole("ADMIN")
-//                        .anyRequest().permitAll()
-//                    .and()
-//                        .oauth2Login().loginPage("/token/expired")
-//                        .successHandler(customAuthenticationSuccessHandler)
-//                        .failureHandler(customAuthenticationFailureHandler)
-//                        .userInfoEndpoint().userService(customOAuth2UserService)
-//         http.addFilterBefore(new JwtAuthFilter(tokenUtils, userRepository), UsernamePasswordAuthenticationFilter.class);
 
         http
                         .csrf().disable().authorizeRequests()
@@ -85,7 +72,7 @@ public class WebSecurityConfig {
 
     @Bean
     public CustomFormLoginSuccessHandler customFormLoginSuccessHandler(){
-        return new CustomFormLoginSuccessHandler(tokenUtils);
+        return new CustomFormLoginSuccessHandler(tokenUtils, redisUtils, cookieUtils);
     }
 
     @Bean

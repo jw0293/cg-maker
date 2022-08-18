@@ -2,6 +2,7 @@ package com.html.cgmaker.login.config.web;
 
 import com.html.cgmaker.login.form.interceptor.JwtTokenInterceptor;
 import com.html.cgmaker.login.config.filter.HeaderFilter;
+import com.html.cgmaker.login.utils.CookieUtils;
 import com.html.cgmaker.login.utils.TokenUtils;
 import com.html.cgmaker.login.form.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final TokenUtils tokenUtils;
+    private final CookieUtils cookieUtils;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -39,6 +41,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
     public JwtTokenInterceptor jwtTokenInterceptor(){
-        return new JwtTokenInterceptor(tokenUtils);
+        return new JwtTokenInterceptor(tokenUtils, cookieUtils);
     }
 }
