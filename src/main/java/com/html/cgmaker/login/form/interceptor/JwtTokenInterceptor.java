@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.html.cgmaker.login.domain.constants.AuthConstants;
 import com.html.cgmaker.login.domain.dto.Token;
 import com.html.cgmaker.login.domain.enums.UserRole;
+import com.html.cgmaker.login.utils.CookieUtils;
 import com.html.cgmaker.login.utils.TokenUtils;
 import com.html.cgmaker.login.form.web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,26 +20,26 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtTokenInterceptor implements HandlerInterceptor {
 
     private final TokenUtils tokenUtils;
+    private final CookieUtils cookieUtils;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String accessToken = request.getHeader(AuthConstants.AUTH_HEADER);
+        Cookie accessCookie = cookieUtils.getCookie(request, AuthConstants.AUTH_HEADER);
+        String accessToken = accessCookie.getValue();
+
         if(accessToken != null && tokenUtils.isValidToken(accessToken)){
             return true;
         }
 
-        String refreshToken = request.getHeader(AuthConstants.REFRESH_HEADER);
+        Cookie refreshCookie = cookieUtils.getCookie(request, AuthConstants.REFRESH_HEADER);
+        String refreshToken = refreshCookie.getValue();
+
         if(refreshToken != null && tokenUtils.isValidToken(refreshToken)) {
-            String email = tokenUtils.getUid(refreshToken);
-            Token newToken = tokenUtils.generateToken(email, UserRole.USER.getKey());
+            Cookie cookie = tokenUtils.reissueAccessToken(response, refreshToken);
 
-            response.addHeader(AuthConstants.AUTH_HEADER, newToken.getAccessToken());
-            response.addHeader(AuthConstants.REFRESH_HEADER, newToken.getRefreshToken());
+            response.addCookie(cookie);
             response.setContentType("application/json;charset=UTF-8");
-
-            log.info("New AccessToken : " + newToken.getAccessToken());
-            log.info("New RefreshToken : " + newToken.getRefreshToken());
 
             return true;
         }
@@ -45,4 +47,5 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
         response.sendRedirect("/error/unauthorized");
         return false;
     }
+
 }
