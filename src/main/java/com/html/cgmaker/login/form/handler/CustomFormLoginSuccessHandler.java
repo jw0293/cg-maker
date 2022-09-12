@@ -19,7 +19,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +30,6 @@ public class CustomFormLoginSuccessHandler extends SavedRequestAwareAuthenticati
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-
         final Member member = ((MyUserDetails) authentication.getPrincipal()).getMember();
         final Token token = tokenUtils.generateToken(member.getEmail(), UserRole.USER.getKey());
 
