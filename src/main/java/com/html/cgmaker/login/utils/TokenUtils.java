@@ -26,9 +26,9 @@ public class TokenUtils {
     private static String secretKey;
 
     // Access 토큰 유효시간 15분
-    static final long AccessTokenValidTime = 1 * 60 * 1000L;
+    static final long AccessTokenValidTime = 15 * 60 * 1000L;
     // Refresh Token 유효시간 2시간
-    static final long RefreshTokenValidTime = 3 * 60 * 1000L;
+    static final long RefreshTokenValidTime = 120 * 60 * 1000L;
 
     public long getRefreshTokenValidTime(){
         return RefreshTokenValidTime;
